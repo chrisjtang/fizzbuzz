@@ -36,12 +36,17 @@ fizzbuzzController.getOne = async (req, res, next) => {
 fizzbuzzController.addOne = async (req, res, next) => {
   try {
     // expect req.body to have the format { "message": "str" }
-    const message = await req.body.message;
-    // can grab the useragent from req.headers['user-agent'];
-    const userAgent = req.headers['user-agent'];
-    const query = `INSERT INTO "fizzbuzz"("useragent", "message") VALUES('${userAgent}', '${message}') RETURNING "fizzbuzzid", "useragent", "creationdate", "message"`;
-    const queryResult = await db.query(query);
-    return next();
+    if (await req.body.message) {
+      const message = await req.body.message;
+      // can grab the useragent from req.headers['user-agent'];
+      const userAgent = req.headers['user-agent'];
+      const query = `INSERT INTO "fizzbuzz"("useragent", "message") VALUES('${userAgent}', '${message}') RETURNING "fizzbuzzid", "useragent", "creationdate", "message"`;
+      const queryResult = await db.query(query);
+      return next();
+    } else {
+      //if the body doesn't have a message property, then return an error message
+      return res.status(400).send('body needs to have message property');
+    }
   } catch {
     return res.status(400).send(`error in the fizzbuzzController.addOne async await statement`);
   }

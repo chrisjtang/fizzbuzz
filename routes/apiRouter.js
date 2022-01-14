@@ -19,7 +19,8 @@ router.get('/:id', controller.getOne, (req, res) => {
 // POST /fizzbuzz - to create a new fizzbuzz object post -> fizzbuzzcontroller addOne query -> response
 router.post('/post', controller.addOne, (req, res) => {
   // respond with success status 204
-  return res.status(204);
+  res.status(204);
+  return res.json(`post request complete`);
 })
 
 module.exports = router;

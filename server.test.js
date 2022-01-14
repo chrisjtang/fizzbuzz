@@ -2,6 +2,8 @@ const { expect } = require('chai');
 const request = require('supertest');
 const { Pool } = require('pg');
 const db = require('./models/fizzbuzzModel');
+const assert = require('assert');
+const http = require('http');
 
 describe('Fizzbuzz testing', () => {
   let server;
@@ -24,39 +26,64 @@ describe('Fizzbuzz testing', () => {
     await db.query('CREATE TEMPORARY TABLE fizzbuzz (LIKE fizzbuzz INCLUDING ALL)')
   })
 
-  beforeEach('Insert fake data', async () => {
-      await db.query('INSERT INTO pg_temp.fizzbuzz (message) VALUES ("test message content")')
-    })
+  beforeEach('Create a fake fizzbuzz', async () => {
+    await db.query(`INSERT INTO pg_temp.fizzbuzz("fizzbuzzid", "useragent", "creationdate", "message") VALUES(1, 'test useragent', 'test date', 'test message')`)
+  })
 
   afterEach('Drop the temporary tables', async () => {
     await db.query('DROP TABLE IF EXISTS pg_temp.fizzbuzz')
   })
 
-  describe('POST /fizzbuzz', () => {
-    it('should create a new fizzbuzz', async () => {
-      const req = {
-        "message": "this is a test message"
-      }
-      await postFizzbuzz(req);
+  describe('Get requests to /api', () => {
+    it('should respond with json containing a list of all users', (done) => {
+        request(server)
+          .get('/api/')
+          .set('Accept', 'application/json')
+          .expect('Content-Type', /json/)
+          .expect(200, done);
+    });
+  });
 
-      const { rows } = await db.query(`SELECT * FROM "fizzbuzz"`)
-      expect(rows).lengthOf(2)
-      expect(rows[1]).to.deep.equal(req)
-    })
+  describe('Get requests to /api/:id', () => {
+    it('should respond with json containing a single user', (done) => {
+      request(server)
+        .get('/api/1')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200, done);
+    });
+  });
 
-    it('Should fail if request body is missing message', async () => {
-      await postNote({ name: 'this is the wrong body' }, 400)
-      await postNote({ content: 'content1' }, 400)
-      await postNote({}, 400)
-    })
+  describe('Post requests to /api/post', () => {
+    let data = {
+      "message": "test"
+    }
+    it('should respond with 204 status', (done) => {
+      request(server)
+        .post('/api/post')
+        .send(data)
+        .set('Accept', 'application/json')
+        .expect(204)
+        .end((err) => {
+            if (err) return done(err);
+            done();
+        });
+    });
+
+    let badData = {
+      "not message": "test"
+    }
+
+    it('should fail if body is missing the message property', (done) => {
+      request(server)
+        .post('/api/post')
+        .send(badData)
+        .set('Accept', 'application/json')
+        .expect(400)
+        .end((err) => {
+            if (err) return done(err);
+            done();
+        });
+    });
   })
-  
-  async function postFizzbuzz (req, status = 200) {
-    const { body } = await request(app)
-    .post('/post')
-    .send(req)
-    .expect(status)
-    return body
-  }
-})
-  
+});

@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 const apiRouter = require('./routes/apiRouter');
+const bodyParser = require('body-parser');
 
 app.use(express.json());
-
 
 app.use('/api', apiRouter);
 
@@ -17,3 +17,5 @@ app.use((err, req, res, next) => res.status(500).json(err));
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 })
+
+module.exports = app;
