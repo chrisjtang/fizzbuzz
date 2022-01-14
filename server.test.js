@@ -2,9 +2,13 @@ const { expect } = require('chai');
 const request = require('supertest');
 const { Pool } = require('pg');
 const db = require('./models/fizzbuzzModel');
-const assert = require('assert');
-const http = require('http');
 
+/*
+testing documentation: 
+First, we mock the database connection to make sure that's working.  Then we load the server.  
+Before each test, we create temporary tables that mimic our actual data set.  We also create a fake fizzbuzz to populate the table for further testing.
+
+*/
 describe('Fizzbuzz testing', () => {
   let server;
   
