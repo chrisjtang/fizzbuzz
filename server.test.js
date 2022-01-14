@@ -2,10 +2,9 @@
 ************************************************************************
 Testing Documentation: 
 - First, we mock the database connection to make sure that's working.  Then we load the server.  
-
-- Before each test, we create temporary tables that mimic our actual data set.  We also create a fake fizzbuzz to populate the table for further testing.
-
-- We have tests for each endpoint that our Express server takes care of.
+- Before each test, we create a temporary table that mimics our actual data set.  We also create a fake fizzbuzz to populate the table for further testing.
+- After each test, we drop the temporary table.
+- And last but not least, we have tests for each endpoint that our Express server takes care of.
 ************************************************************************
 */
 const { expect } = require('chai');
@@ -29,7 +28,7 @@ describe('Fizzbuzz testing', () => {
     server = require('./server')
   })
 
-  beforeEach('Create temporary tables', async () => {
+  beforeEach('Create temporary table', async () => {
     await db.query('CREATE TEMPORARY TABLE fizzbuzz (LIKE fizzbuzz INCLUDING ALL)')
   })
 
@@ -37,7 +36,7 @@ describe('Fizzbuzz testing', () => {
     await db.query(`INSERT INTO pg_temp.fizzbuzz("fizzbuzzid", "useragent", "creationdate", "message") VALUES(1, 'test useragent', 'test date', 'test message')`)
   })
 
-  afterEach('Drop the temporary tables', async () => {
+  afterEach('Drop the temporary table', async () => {
     await db.query('DROP TABLE IF EXISTS pg_temp.fizzbuzz')
   })
 

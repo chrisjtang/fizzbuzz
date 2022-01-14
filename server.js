@@ -1,8 +1,8 @@
 /*
 ************************************************************************
 Server Documentation: 
-Standard express server setup.  We use an /api endpoint and apiRouter to route requests meant for the fizzbuzz api.
-This keeps our server.js file clean and also allows for our app to have a clean implementation of authentication (i.e. for o-auth, jwts, etc)
+- As Felipe suggested, I opted to use Express since I felt like it would more fully encapsulate my abilities as a backend engineer (thank you for giving me that option!)
+- I used an /api endpoint and apiRouter to route requests meant for the fizzbuzz api to keep our server.js file clean and also allow for our app to have a cleaner implementation of authentication (i.e. for o-auth, jwts, etc)
 ************************************************************************
 */
 

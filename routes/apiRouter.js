@@ -1,9 +1,8 @@
 /*
 ************************************************************************
 apiRouter Documentation: 
-The requests that are routed to our API are then routed to our fizzbuzz controller middleware.
-Opted to use a controller instead of writing the DB queries into the apiRouter file to keep the code clean and modularized.  
-Comments below explain the different lines of code.
+- The requests that are routed to our API are then routed to our fizzbuzz controller middleware.
+- I opted to use a controller instead of writing the DB queries into the apiRouter file to keep the code clean and modularized.  
 ************************************************************************
 */
 
