@@ -1,11 +1,19 @@
+/*
+************************************************************************
+Server Documentation: 
+Standard express server setup.  We use an /api endpoint and apiRouter to route requests meant for the fizzbuzz api.
+This keeps our server.js file clean and also allows for our app to have a clean implementation of authentication (i.e. for o-auth, jwts, etc)
+************************************************************************
+*/
+
 const express = require('express');
 const app = express();
 const PORT = 3000;
 const apiRouter = require('./routes/apiRouter');
-const bodyParser = require('body-parser');
 
 app.use(express.json());
 
+// We will route all of the incoming requests that are meant for the fizzbuzz api to the /api endpoint, which will then be taken care of by our apiRouter
 app.use('/api', apiRouter);
 
 // Local error handler

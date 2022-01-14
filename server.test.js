@@ -1,14 +1,18 @@
+/*
+************************************************************************
+Testing Documentation: 
+- First, we mock the database connection to make sure that's working.  Then we load the server.  
+
+- Before each test, we create temporary tables that mimic our actual data set.  We also create a fake fizzbuzz to populate the table for further testing.
+
+- We have tests for each endpoint that our Express server takes care of.
+************************************************************************
+*/
 const { expect } = require('chai');
 const request = require('supertest');
 const { Pool } = require('pg');
 const db = require('./models/fizzbuzzModel');
 
-/*
-testing documentation: 
-First, we mock the database connection to make sure that's working.  Then we load the server.  
-Before each test, we create temporary tables that mimic our actual data set.  We also create a fake fizzbuzz to populate the table for further testing.
-
-*/
 describe('Fizzbuzz testing', () => {
   let server;
   
@@ -18,7 +22,6 @@ describe('Fizzbuzz testing', () => {
       connectionString: URI
     })
 
-    //query to return a connection to the pool we created
     db.query = (test) => {
       return pool.query(test);
     }
@@ -78,7 +81,7 @@ describe('Fizzbuzz testing', () => {
       "not message": "test"
     }
 
-    it('should fail if body is missing the message property', (done) => {
+    it('should fail if request body is missing the message property', (done) => {
       request(server)
         .post('/api/post')
         .send(badData)

@@ -1,3 +1,11 @@
+/*
+************************************************************************
+FizzBuzz Controller Documentation: 
+I kept all of the database queries in this controller file in order to keep the code cleaner and more modularized.
+Also, I used async/await syntax to help increase code readability (even though the code is executed asynchronously, it still can be understood line by line).
+************************************************************************
+*/
+
 const db = require('../models/fizzbuzzModel');
 const fizzbuzzController = {};
 
